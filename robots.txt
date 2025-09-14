@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /netlify/
+Allow: /
+
+Sitemap: https://ratiolegis.ru/sitemap.xml
