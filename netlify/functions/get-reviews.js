@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 exports.handler = async (event) => {
     const { NETLIFY_FORM_ID, NETLIFY_ACCESS_TOKEN } = process.env;
 
