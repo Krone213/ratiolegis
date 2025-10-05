@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const reviewFormMessage = document.getElementById('review-form-message');
         reviewForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            const submitButton = reviewForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Отправка...';
+
             const formData = new FormData(reviewForm);
             fetch("/", {
                 method: "POST",
@@ -52,23 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showMessage(reviewFormMessage, 'Спасибо! Ваш отзыв отправлен на модерацию.', 'success');
             })
             .catch(error => {
-                showMessage(reviewFormMessage, `Произошла ошибка при отправке отзыва: ${error}`, 'error');
+                showMessage(reviewFormMessage, `Ошибка: ${error}`, 'error');
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Оставить отзыв';
             });
         });
-    }
-    
-    // --- ЛОГИКА ЗАГРУЗКИ ОПУБЛИКОВАННЫХ ОТЗЫВОВ ---
-    // (Пока не реализована, чтобы не усложнять. Сейчас отзывы нужно добавлять вручную в HTML)
-    const reviewsList = document.getElementById('reviews-list');
-    if (reviewsList) {
-        const reviewsLoader = document.getElementById('reviews-loader');
-        // Проверяем, есть ли уже в верстке карточки отзывов
-        const existingReviews = reviewsList.querySelectorAll('.review-card');
-        if (existingReviews.length > 0) {
-            reviewsLoader.style.display = 'none'; // Если есть, прячем загрузчик
-        } else {
-            reviewsLoader.textContent = 'Отзывов пока нет. Станьте первым!'; // Если нет, меняем текст
-        }
     }
 
     // --- ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
@@ -79,22 +73,23 @@ document.addEventListener('DOMContentLoaded', function() {
         element.classList.add(type);
     }
     
-    function escapeHTML(str) {
-        return str.replace(/[&<>"']/g, match => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[match]));
-    }
-
-    // --- АНИМАЦИЯ ПРИ ПРОКРУТКЕ ---
+    // --- ИСПРАВЛЕННАЯ ЛОГИКА АНИМАЦИИ ---
     const scrollElements = document.querySelectorAll('.animate-on-scroll');
-    const elementInView = (el) => el.getBoundingClientRect().top <= window.innerHeight;
-    const displayScrollElement = (el) => el.classList.add('is-visible');
-    const handleScrollAnimation = () => scrollElements.forEach(el => { if (elementInView(el)) displayScrollElement(el); });
+    const elementInView = (el, dividend = 1) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend);
+    };
+    const displayScrollElement = (element) => {
+        element.classList.add('is-visible');
+    };
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 1.25)) {
+                displayScrollElement(el);
+            }
+        });
+    };
     window.addEventListener('scroll', handleScrollAnimation);
+    // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
-
-1.  **Откройте ваш репозиторий на GitHub.**
-2.  Найдите файл **`index.html`**, нажмите "Edit", сотрите старый код и вставьте новый из **пункта 1**. Сохраните.
-3.  Найдите файл **`script.js`**, нажмите "Edit", сотрите старый код и вставьте новый из **пункта 2**. Сохраните.
-4.  **Готово!** Netlify автоматически начнет пересборку вашего сайта. Через 1-2 минуты все изменения будут онлайн, и все функции (включая отправку заявки) будут работать корректно.
