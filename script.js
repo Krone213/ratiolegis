@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+   // --- НОВАЯ ЛОГИКА ДЛЯ БУРГЕР-МЕНЮ ---
+    const burgerIcon = document.getElementById('burger-icon');
+    const mobileMenu = document.getElementById('mobile-menu');
 
+    if (burgerIcon && mobileMenu) {
+        burgerIcon.addEventListener('click', function() {
+            burgerIcon.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+    }
     // --- ЛОГИКА ДЛЯ ФОРМЫ ЗАЯВКИ (Отправка в Telegram через Netlify Functions) ---
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
@@ -125,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
 
 
 
