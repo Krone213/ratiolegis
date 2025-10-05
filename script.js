@@ -64,24 +64,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-     // --- АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ ---
+   // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ ---
     const reviewsList = document.getElementById('reviews-list');
     if (reviewsList) {
-        // Эти переменные будут заменены Netlify во время сборки
-        const FORM_ID = '{{ env.NETLIFY_FORM_ID }}';
-        const ACCESS_TOKEN = '{{ env.NETLIFY_ACCESS_TOKEN }}';
+        // Находим наш невидимый div
+        const netlifyVars = document.getElementById('netlify-vars');
+        
+        // Читаем ключи из его атрибутов
+        const FORM_ID = netlifyVars ? netlifyVars.dataset.formId : null;
+        const ACCESS_TOKEN = netlifyVars ? netlifyVars.dataset.accessToken : null;
         
         async function fetchAndDisplayReviews() {
             const reviewsLoader = document.getElementById('reviews-loader');
-            // Проверяем, что ключи были успешно внедрены
-            if (!FORM_ID.includes("env.") && !ACCESS_TOKEN.includes("env.")) {
+            
+            // Проверяем, что ключи существуют и не являются плейсхолдерами
+            if (FORM_ID && ACCESS_TOKEN && !FORM_ID.includes('{{') && !ACCESS_TOKEN.includes('{{')) {
                 try {
                     const response = await fetch(`https://api.netlify.com/api/v1/forms/${FORM_ID}/submissions`, {
                         headers: { 'Authorization': `Bearer ${ACCESS_TOKEN}` }
                     });
-                    if (!response.ok) throw new Error('Failed to fetch reviews');
+                    if (!response.ok) throw new Error(`Failed to fetch reviews. Status: ${response.status}`);
                     const submissions = await response.json();
-                    reviewsList.innerHTML = ''; // Очищаем
+                    reviewsList.innerHTML = ''; 
                     if (submissions.length === 0) {
                         reviewsList.innerHTML = '<p>Отзывов пока нет. Станьте первым!</p>';
                     } else {
@@ -98,12 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     reviewsLoader.textContent = "Не удалось загрузить отзывы.";
                 }
             } else {
-                reviewsLoader.textContent = "Настройка автоматической загрузки отзывов не завершена. Добавьте переменные окружения.";
+                console.error("Переменные окружения Netlify не найдены или не были заменены.");
+                reviewsLoader.textContent = "Настройка автоматической загрузки отзывов не завершена.";
             }
         }
         fetchAndDisplayReviews();
     }
-    
     // --- ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
     function showMessage(element, message, type) {
         if (!element) return;
@@ -132,5 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
 
 
