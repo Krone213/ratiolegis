@@ -64,48 +64,47 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-   // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ ---
+      // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ (ЧЕРЕЗ ФУНКЦИЮ-ПОСРЕДНИК) ---
     const reviewsList = document.getElementById('reviews-list');
     if (reviewsList) {
-        // Находим наш невидимый div
-        const netlifyVars = document.getElementById('netlify-vars');
-        
-        // Читаем ключи из его атрибутов
-        const FORM_ID = netlifyVars ? netlifyVars.dataset.formId : null;
-        const ACCESS_TOKEN = netlifyVars ? netlifyVars.dataset.accessToken : null;
         
         async function fetchAndDisplayReviews() {
             const reviewsLoader = document.getElementById('reviews-loader');
-            
-            // Проверяем, что ключи существуют и не являются плейсхолдерами
-            if (FORM_ID && ACCESS_TOKEN && !FORM_ID.includes('{{') && !ACCESS_TOKEN.includes('{{')) {
-                try {
-                    const response = await fetch(`https://api.netlify.com/api/v1/forms/${FORM_ID}/submissions`, {
-                        headers: { 'Authorization': `Bearer ${ACCESS_TOKEN}` }
+            try {
+                // Делаем запрос не к внешнему API, а к нашей безопасной функции-посреднику
+                const response = await fetch('/.netlify/functions/get-reviews');
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка сервера: ${response.statusText}`);
+                }
+                
+                const submissions = await response.json();
+                
+                // Проверяем, не вернул ли наш посредник ошибку
+                if (submissions.error) {
+                    throw new Error(submissions.error);
+                }
+
+                reviewsList.innerHTML = ''; // Очищаем "Загрузка..."
+                if (submissions.length === 0) {
+                    reviewsList.innerHTML = '<p>Отзывов пока нет. Станьте первым!</p>';
+                } else {
+                    submissions.forEach(submission => {
+                        const review = submission.data;
+                        const reviewElement = document.createElement('div');
+                        reviewElement.className = 'review-card';
+                        reviewElement.innerHTML = `<blockquote>«${escapeHTML(review.text)}»</blockquote><cite>${escapeHTML(review.author)}</cite>`;
+                        reviewsList.appendChild(reviewElement);
                     });
-                    if (!response.ok) throw new Error(`Failed to fetch reviews. Status: ${response.status}`);
-                    const submissions = await response.json();
-                    reviewsList.innerHTML = ''; 
-                    if (submissions.length === 0) {
-                        reviewsList.innerHTML = '<p>Отзывов пока нет. Станьте первым!</p>';
-                    } else {
-                        submissions.forEach(submission => {
-                            const review = submission.data;
-                            const reviewElement = document.createElement('div');
-                            reviewElement.className = 'review-card';
-                            reviewElement.innerHTML = `<blockquote>«${escapeHTML(review.text)}»</blockquote><cite>${escapeHTML(review.author)}</cite>`;
-                            reviewsList.appendChild(reviewElement);
-                        });
-                    }
-                } catch (error) {
-                    console.error("Ошибка загрузки отзывов:", error);
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки отзывов:", error);
+                if(reviewsLoader) {
                     reviewsLoader.textContent = "Не удалось загрузить отзывы.";
                 }
-            } else {
-                console.error("Переменные окружения Netlify не найдены или не были заменены.");
-                reviewsLoader.textContent = "Настройка автоматической загрузки отзывов не завершена.";
             }
         }
+        
         fetchAndDisplayReviews();
     }
     // --- ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
@@ -136,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
 
 
 
