@@ -36,15 +36,19 @@
                 </div>
 
                 <!-- Форма для Netlify -->
-                <div class="review-form-container">
-                    <h2>Оставить свой отзыв</h2>
-                    <form name="reviews" method="POST" data-netlify="true" class="contact-form">
-                        <div class="form-group"><input type="text" id="review-author" name="author" placeholder="Ваше имя и должность (например, Иван П., адвокат)" required></div>
-                        <div class="form-group"><textarea id="review-text" name="text" placeholder="Напишите ваш отзыв здесь..." required></textarea></div>
-                        <button type="submit" class="btn-primary">Отправить отзыв на модерацию</button>
-                    </form>
-                    <div id="review-form-message" class="form-message"></div>
-                </div>
+               <div class="review-form-container">
+    <h2>Оставить свой отзыв</h2>
+    <form name="reviews" method="POST" data-netlify="true" class="contact-form">
+        <div class="form-group">
+            <input type="text" id="review-author" name="author" placeholder="Ваше имя и должность (например, Иван П., адвокат)" required>
+        </div>
+        <div class="form-group">
+            <textarea id="review-text" name="text" placeholder="Напишите ваш отзыв здесь..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Оставить отзыв</button>
+    </form>
+    <div id="review-form-message" class="form-message"></div>
+</div>
             </div>
         </section>
     </main>
