@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы клиентов - Ratio Legis</title>
+    <meta name="description" content="Отзывы юристов и адвокатов о сотрудничестве с Ratio Legis. Оставьте свой отзыв о нашей работе.">
+    <link rel="icon" href="src/logo.png" type="image/png"><link rel="apple-touch-icon" href="src/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"> <img src="src/logo.png" alt="Логотип Ratio Legis"> </a>
+                <nav><ul class="nav-menu">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="services.html">Другие услуги</a></li>
+                    <li><a href="reviews.html">Отзывы</a></li>
+                </ul></nav>
+                <a href="https://t.me/ratiolegis_group" target="_blank" class="header-contact-btn">Написать нам</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="page-header"><div class="container">
+            <h1>Отзывы наших клиентов</h1>
+            <p class="subtitle">Нам доверяют юристы и адвокатские бюро. Будем рады, если вы поделитесь своим мнением о нашей работе.</p>
+        </div></section>
+        <section class="reviews-page">
+            <div class="container">
+                <!-- Сюда JavaScript будет загружать отзывы -->
+                <div id="reviews-list" class="reviews-grid">
+                    <p id="reviews-loader">Загрузка отзывов...</p>
+                </div>
+
+                <!-- Форма для Netlify -->
+                <div class="review-form-container">
+                    <h2>Оставить свой отзыв</h2>
+                    <form name="reviews" method="POST" data-netlify="true" class="contact-form">
+                        <div class="form-group"><input type="text" id="review-author" name="author" placeholder="Ваше имя и должность (например, Иван П., адвокат)" required></div>
+                        <div class="form-group"><textarea id="review-text" name="text" placeholder="Напишите ваш отзыв здесь..." required></textarea></div>
+                        <button type="submit" class="btn-primary">Отправить отзыв на модерацию</button>
+                    </form>
+                    <div id="review-form-message" class="form-message"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer"><div class="container">
+        <p>© 2025 ratiolegis.ru | Все права защищены.</p>
+        <p>Контактная информация: <a href="mailto:info@ratiolegis.ru">info@ratiolegis.ru</a></p>
+    </div></footer>
+    <script src="script.js"></script>
+</body>
+</html>
