@@ -64,7 +64,51 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    // --- НОВАЯ ЛОГИКА ДЛЯ ДИНАМИЧЕСКОЙ ЗАГРУЗКИ ОТЗЫВОВ ---
+    const reviewsList = document.getElementById('reviews-list');
+    if (reviewsList) {
+        // Эти переменные будут "внедрены" Netlify во время сборки
+        const FORM_ID = '{{ env.NETLIFY_FORM_ID }}';
+        const ACCESS_TOKEN = '{{ env.NETLIFY_ACCESS_TOKEN }}';
+        
+        async function fetchAndDisplayReviews() {
+            const reviewsLoader = document.getElementById('reviews-loader');
+            if (!FORM_ID || !ACCESS_TOKEN) {
+                reviewsLoader.textContent = "Настройка загрузки отзывов не завершена.";
+                return;
+            }
 
+            try {
+                const response = await fetch(`https://api.netlify.com/api/v1/forms/${FORM_ID}/submissions`, {
+                    headers: { 'Authorization': `Bearer ${ACCESS_TOKEN}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch reviews');
+                
+                const submissions = await response.json();
+                reviewsList.innerHTML = ''; // Очищаем
+
+                if (submissions.length === 0) {
+                    reviewsList.innerHTML = '<p>Отзывов пока нет. Станьте первым!</p>';
+                } else {
+                    submissions.forEach(submission => {
+                        const review = submission.data;
+                        const reviewElement = document.createElement('div');
+                        reviewElement.className = 'review-card';
+                        reviewElement.innerHTML = `
+                            <blockquote>«${escapeHTML(review.text)}»</blockquote>
+                            <cite>${escapeHTML(review.author)}</cite>
+                        `;
+                        reviewsList.appendChild(reviewElement);
+                    });
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки отзывов:", error);
+                reviewsLoader.textContent = "Не удалось загрузить отзывы.";
+            }
+        }
+        fetchAndDisplayReviews();
+    }
     // --- ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
     function showMessage(element, message, type) {
         if (!element) return;
@@ -93,3 +137,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
