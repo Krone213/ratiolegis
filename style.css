@@ -1,12 +1,30 @@
-/* ВЕСЬ ПРЕДЫДУЩИЙ КОД CSS ОСТАЕТСЯ ЗДЕСЬ */
-/* ... (скопируйте ваш старый CSS-код) ... */
 
-/* ДОБАВЬТЕ ЭТО В КОНЕЦ ФАЙЛА style.css */
-.btn-primary:disabled {
-    background-color: #c5a032;
-    cursor: wait;
-    opacity: 0.7;
+/* --- ИСПРАВЛЕНИЯ ДЛЯ МОБИЛЬНОГО МЕНЮ --- */
+@media (max-width: 992px) {
+    .nav-menu {
+        display: flex; /* Убеждаемся, что меню видимо */
+        justify-content: center;
+        flex-wrap: wrap; /* Позволяем пунктам переноситься на новую строку */
+        gap: 15px;
+        margin-top: 15px;
+        width: 100%;
+    }
+    .header-content {
+        flex-wrap: wrap; /* Позволяем шапке перестраиваться */
+        justify-content: center;
+    }
+    .header-contact-btn {
+        margin-top: 15px;
+    }
 }
+@media (max-width: 768px) {
+    /* Дополнительные корректировки для очень маленьких экранов */
+    .nav-menu li {
+        margin-left: 0;
+    }
+}
+
+
 /* --- СТИЛИ ДЛЯ НОВЫХ СТРАНИЦ --- */
 .page-header { background-color: var(--bg-color); text-align: center; padding: 60px 0; }
 .page-header h1 { font-size: 2.8rem; }
@@ -36,4 +54,9 @@
 }
 .review-form-container .form-group:nth-child(2) textarea {
     padding-left: 20px; /* Убираем отступ для иконки у текстового поля */
+}
+.btn-primary:disabled {
+    background-color: #c5a032;
+    cursor: wait;
+    opacity: 0.7;
 }
