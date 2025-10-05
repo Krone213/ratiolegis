@@ -35,21 +35,38 @@
 </head>
 <body>
 
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo"> <img src="src/logo.png" alt="Логотип Ratio Legis - ознакомление с делами"> </a>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="index.html">Главная</a></li>
-                        <li><a href="services.html">Другие услуги</a></li>
-                        <li><a href="reviews.html">Отзывы</a></li>
-                    </ul>
-                </nav>
-                <a href="https://t.me/ratiolegis_group" target="_blank" class="header-contact-btn">Написать нам</a>
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo"> <img src="src/logo.png" alt="Логотип Ratio Legis"> </a>
+            
+            <!-- Навигация для больших экранов -->
+            <nav class="nav-desktop">
+                <ul class="nav-menu">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="services.html">Другие услуги</a></li>
+                    <li><a href="reviews.html">Отзывы</a></li>
+                </ul>
+            </nav>
+            
+            <a href="https://t.me/ratiolegis_group" target="_blank" class="header-contact-btn">Написать нам</a>
+
+            <!-- Иконка бургер-меню для мобильных -->
+            <div class="burger-menu-icon" id="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-    </header>
+    </div>
+    
+    <!-- Выезжающее мобильное меню (изначально скрыто) -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="index.html">Главная</a>
+        <a href="services.html">Другие услуги</a>
+        <a href="reviews.html">Отзывы</a>
+    </div>
+</header>
 
     <main>
         <section class="hero"> <div class="container"> <div class="hero-content"> <h1 class="animate-on-load">Устали ездить в суды? <br> Мы изучим материалы дела за вас!</h1> <p class="subtitle animate-on-load">Команда юристов оперативно ознакомится с материалами дела в любых судах Москвы, Московской области и близлежащих регионов.</p> <a href="#contact" class="btn-primary animate-on-load">Оставить заявку</a> </div> </div> </section>
@@ -78,3 +95,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
