@@ -64,26 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-      // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ (ЧЕРЕЗ ФУНКЦИЮ-ПОСРЕДНИК) ---
+   // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ ---
     const reviewsList = document.getElementById('reviews-list');
     if (reviewsList) {
-        
         async function fetchAndDisplayReviews() {
             const reviewsLoader = document.getElementById('reviews-loader');
             try {
-                // Делаем запрос не к внешнему API, а к нашей безопасной функции-посреднику
+                // Делаем запрос к нашей безопасной функции-посреднику
                 const response = await fetch('/.netlify/functions/get-reviews');
-                
-                if (!response.ok) {
-                    throw new Error(`Ошибка сервера: ${response.statusText}`);
-                }
-                
+                if (!response.ok) throw new Error(`Ошибка сервера: ${response.statusText}`);
                 const submissions = await response.json();
-                
-                // Проверяем, не вернул ли наш посредник ошибку
-                if (submissions.error) {
-                    throw new Error(submissions.error);
-                }
+                if (submissions.error) throw new Error(submissions.error);
 
                 reviewsList.innerHTML = ''; // Очищаем "Загрузка..."
                 if (submissions.length === 0) {
@@ -104,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-        
         fetchAndDisplayReviews();
     }
     // --- ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
@@ -135,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
 
 
 
