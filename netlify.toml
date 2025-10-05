@@ -1,16 +1,4 @@
 [build]
-
-  functions = "netlify/functions"
-
-  # НОВЫЙ БЛОК ДЛЯ ОБРАБОТКИ ПЕРЕМЕННЫХ
-[context.production]
-  [context.production.processing]
-    [context.production.processing.html]
-      # Эта настройка включает обработку переменных в HTML
-      process_html_env_variables = true 
-```    **Ваш финальный `netlify.toml` должен выглядеть примерно так:**
-```toml
-[build]
   functions = "netlify/functions"
 
 [context.production]
