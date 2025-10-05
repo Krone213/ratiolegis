@@ -10,19 +10,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo"> <img src="src/logo.png" alt="Логотип Ratio Legis"> </a>
-                <nav><ul class="nav-menu">
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo"> <img src="src/logo.png" alt="Логотип Ratio Legis"> </a>
+            
+            <!-- Навигация для больших экранов -->
+            <nav class="nav-desktop">
+                <ul class="nav-menu">
                     <li><a href="index.html">Главная</a></li>
                     <li><a href="services.html">Другие услуги</a></li>
                     <li><a href="reviews.html">Отзывы</a></li>
-                </ul></nav>
-                <a href="https://t.me/ratiolegis_group" target="_blank" class="header-contact-btn">Написать нам</a>
+                </ul>
+            </nav>
+            
+            <a href="https://t.me/ratiolegis_group" target="_blank" class="header-contact-btn">Написать нам</a>
+
+            <!-- Иконка бургер-меню для мобильных -->
+            <div class="burger-menu-icon" id="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-    </header>
+    </div>
+    
+    <!-- Выезжающее мобильное меню (изначально скрыто) -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="index.html">Главная</a>
+        <a href="services.html">Другие услуги</a>
+        <a href="reviews.html">Отзывы</a>
+    </div>
+</header>
     <main>
         <section class="page-header"><div class="container">
             <h1>Отзывы наших клиентов</h1>
