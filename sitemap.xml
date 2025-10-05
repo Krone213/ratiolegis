@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ratio-legis.ru/</loc>
-    <lastmod>2025-09-14</lastmod>
+    <loc>https://ratiolegis.ru/</loc>
+    <lastmod>2025-09-18</lastmod>
     <priority>1.00</priority>
   </url>
-
+  <url>
+    <loc>https://ratiolegis.ru/services.html</loc>
+    <lastmod>2025-09-18</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ratiolegis.ru/reviews.html</loc>
+    <lastmod>2025-09-18</lastmod>
+    <priority>0.80</priority>
+  </url>
 </urlset>
