@@ -73,19 +73,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-   // --- ИСПРАВЛЕННАЯ АВТОМАТИЧЕСКАЯ ЗАГРУЗКА ОТЗЫВОВ ---
+ // --- ФИНАЛЬНАЯ ВЕРСИЯ ЗАГРУЗКИ ОТЗЫВОВ С ДИАГНОСТИКОЙ ---
     const reviewsList = document.getElementById('reviews-list');
     if (reviewsList) {
         async function fetchAndDisplayReviews() {
             const reviewsLoader = document.getElementById('reviews-loader');
             try {
-                // Делаем запрос к нашей безопасной функции-посреднику
+                console.log("Начинаю загрузку отзывов...");
                 const response = await fetch('/.netlify/functions/get-reviews');
-                if (!response.ok) throw new Error(`Ошибка сервера: ${response.statusText}`);
+                console.log("Ответ от сервера получен. Статус:", response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Ошибка сервера: ${response.status}. Ответ: ${errorText}`);
+                }
+                
                 const submissions = await response.json();
                 if (submissions.error) throw new Error(submissions.error);
 
-                reviewsList.innerHTML = ''; // Очищаем "Загрузка..."
+                console.log("Получено отзывов:", submissions.length);
+                reviewsList.innerHTML = ''; 
                 if (submissions.length === 0) {
                     reviewsList.innerHTML = '<p>Отзывов пока нет. Станьте первым!</p>';
                 } else {
@@ -98,9 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             } catch (error) {
-                console.error("Ошибка загрузки отзывов:", error);
+                console.error("!!! КРИТИЧЕСКАЯ ОШИБКА ЗАГРУЗКИ ОТЗЫВОВ:", error);
                 if(reviewsLoader) {
-                    reviewsLoader.textContent = "Не удалось загрузить отзывы.";
+                    reviewsLoader.textContent = "Не удалось загрузить отзывы. Подробности в консоли.";
                 }
             }
         }
@@ -134,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем функцию один раз при загрузке для элементов, которые уже видны
     handleScrollAnimation();
 });
+
 
 
 
