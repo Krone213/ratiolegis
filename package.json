@@ -1,8 +1,9 @@
 {
   "name": "ratiolegis-project",
   "version": "1.0.0",
-  "description": "Telegram sender for ratiolegis.ru",
+  "description": "Sender for ratiolegis.ru",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7",
+    "encoding": "^0.1.13"
   }
 }
